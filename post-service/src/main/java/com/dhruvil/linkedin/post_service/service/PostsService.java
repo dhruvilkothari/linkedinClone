@@ -45,8 +45,9 @@ public class PostsService {
 
     public PostDto getPostById(Long postId) {
         log.debug("Retrieving post with ID: {}", postId);
-        Long userId = UserContextHolder.getCurrentUserId();
-        List<PersonDto> firstConnections=connectionsClient.getFirstConnections();
+//        Long userId = UserContextHolder.getCurrentUserId();
+//        List<PersonDto> firstConnections=connectionsClient.getFirstConnections();
+
         Post post = postsRepository.findById(postId).orElseThrow(() ->
                 new ResourceNotFoundException("Post not found with id: "+postId));
         return modelMapper.map(post, PostDto.class);
