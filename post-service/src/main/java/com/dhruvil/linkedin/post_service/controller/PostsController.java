@@ -1,5 +1,6 @@
 package com.dhruvil.linkedin.post_service.controller;
 
+import com.dhruvil.linkedin.post_service.auth.UserContextHolder;
 import com.dhruvil.linkedin.post_service.dto.PostCreateRequestDto;
 import com.dhruvil.linkedin.post_service.dto.PostDto;
 import com.dhruvil.linkedin.post_service.service.PostsService;
@@ -19,13 +20,17 @@ public class PostsController {
     private final PostsService postsService;
 
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postDto, HttpServletRequest httpServletRequest) {
-        PostDto createdPost = postsService.createPost(postDto, 1L);
+    public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postDto) {
+        PostDto createdPost = postsService.createPost(postDto);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostDto> getPost(@PathVariable Long postId) {
+    public ResponseEntity<PostDto> getPost(@PathVariable Long postId
+//                                           @RequestHeader("X-User-Id") String userId
+                                           ) {
+//        String userId = httpServletRequest.getHeader("X-User-Id");
+        Long userId = UserContextHolder.getCurrentUserId();
         PostDto postDto = postsService.getPostById(postId);
         return ResponseEntity.ok(postDto);
     }
